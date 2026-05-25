@@ -1,0 +1,25 @@
+name: pdftools
+description: "A new Flutter project."
+publish_to: 'none'
+version: 0.1.0+1
+
+environment:
+  sdk: ^3.12.0
+
+dependencies:
+  file_picker: ^11.0.2
+  flutter:
+    sdk: flutter
+  flutter_doc_scanner: ^0.0.20
+  flutter_riverpod: ^2.5.1
+  pdf: ^3.12.0
+  pdfx: ^2.9.2
+  printing: ^5.14.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
