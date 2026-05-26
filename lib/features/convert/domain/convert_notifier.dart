@@ -17,12 +17,20 @@ class ConvertNotifier extends StateNotifier<ConvertState> {
   Future<void> pickFiles() async {
     final res = await FilePicker.pickFiles(
       type: FileType.image,
-      allowMultiple: false,
+      allowMultiple: true,
       withData: true,
     );
     if (res == null) return;
+    
+    // Check if we are already in ConvertReady state to append files, 
+    // or just replace them. If we just want to replace, we can do:
     final files = res.files.map((f) => f.bytes!).toList();
-    state = ConvertReady(files);
+    if (state is ConvertReady) {
+      final currentFiles = (state as ConvertReady).files;
+      state = ConvertReady([...currentFiles, ...files]);
+    } else {
+      state = ConvertReady(files);
+    }
   }
 
   Future<void> exportPDF(List<Uint8List> files) async {
@@ -32,7 +40,10 @@ class ConvertNotifier extends StateNotifier<ConvertState> {
       final file = pw.MemoryImage(bytes);
       pdf.addPage(pw.Page(build: (_) => pw.Center(child: pw.Image(file))));
     }
-    await Printing.layoutPdf(onLayout: (_) => pdf.save());
+    
+    // Instead of printing the PDF, share it so user can save to files
+    await Printing.sharePdf(bytes: await pdf.save(), filename: 'converted-file.pdf');
+    
     state = ConvertDone();
   }
 

@@ -9,6 +9,9 @@ class ConvertPage extends ConsumerWidget {
     final state = ref.watch(convertProvider);
 
     return Scaffold(
+      appBar: AppBar(
+        title: Text('Convert to PDF'),
+      ),
       body: switch (state) {
         ConvertInitial() => Center(
           child: ElevatedButton(
@@ -27,10 +30,19 @@ class ConvertPage extends ConsumerWidget {
                 itemBuilder: (_, i) => Image.memory(state.files[i]),
               ),
             ),
-            ElevatedButton(
-              onPressed: () =>
-                  ref.read(convertProvider.notifier).exportPDF(state.files),
-              child: Text('Export PDF'),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () => ref.read(convertProvider.notifier).pickFiles(),
+                  child: Text('Pick More Images'),
+                ),
+                ElevatedButton(
+                  onPressed: () =>
+                      ref.read(convertProvider.notifier).exportPDF(state.files),
+                  child: Text('Export PDF'),
+                ),
+              ],
             ),
           ],
         ),
@@ -38,7 +50,7 @@ class ConvertPage extends ConsumerWidget {
         ConvertDone() => Center(
           child: ElevatedButton(
             onPressed: () => ref.read(convertProvider.notifier).pickFiles(),
-            child: Text('Pick More'),
+            child: Text('Pick Image'),
           ),
         ),
       },
