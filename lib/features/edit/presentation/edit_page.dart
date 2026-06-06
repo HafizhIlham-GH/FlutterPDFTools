@@ -5,6 +5,7 @@ import 'package:pdftools/features/edit/domain/edit_state.dart';
 import 'package:pdftools/features/edit/domain/edit_notifier.dart';
 
 class EditPage extends ConsumerStatefulWidget {
+  const EditPage({super.key});
   @override
   ConsumerState<EditPage> createState() => _EditPageState();
 }

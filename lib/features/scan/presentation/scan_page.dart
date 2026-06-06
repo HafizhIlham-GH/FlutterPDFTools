@@ -4,6 +4,7 @@ import 'package:pdftools/features/scan/domain/scan_state.dart';
 import 'package:pdftools/features/scan/domain/scan_notifier.dart';
 
 class ScanPage extends ConsumerWidget {
+  const ScanPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(scanProvider);

@@ -4,6 +4,7 @@ import 'package:pdftools/features/convert/domain/convert_notifier.dart';
 import 'package:pdftools/features/convert/domain/convert_state.dart';
 
 class ConvertPage extends ConsumerWidget {
+  const ConvertPage({super.key});
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(convertProvider);
