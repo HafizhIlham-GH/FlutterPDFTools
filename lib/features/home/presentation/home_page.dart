@@ -4,6 +4,8 @@ import '../../convert/presentation/convert_page.dart';
 import '../../edit/presentation/edit_page.dart';
 import '../../scan/presentation/scan_page.dart';
 
+import 'package:pdftools/app/widgets/pdf_tools_app_bar.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -12,8 +14,6 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-
-
   @override
   Widget build(BuildContext context) {
     const primaryGreen = Color(0xFF00685F);
@@ -24,27 +24,7 @@ class _HomePageState extends State<HomePage> {
 
     return Scaffold(
       backgroundColor: bgGray,
-      appBar: AppBar(
-        backgroundColor: bgGray,
-        elevation: 0,
-        titleSpacing: 0,
-        leading: const Icon(Icons.description, color: primaryGreen),
-        title: const Text(
-          'DocPro PDF',
-          style: TextStyle(
-            color: primaryGreen,
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.settings_outlined, color: textDark),
-            onPressed: () {},
-          ),
-          const SizedBox(width: 8),
-        ],
-      ),
+      appBar: const PdfToolsAppBar(),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(20.0),
         child: Column(
@@ -252,100 +232,9 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 32),
-
-            // Recent Files Header
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                const Text(
-                  'Recent Files',
-                  style: TextStyle(
-                    color: textDark,
-                    fontSize: 18,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-                IconButton(
-                  icon: const Icon(Icons.filter_list, color: textDark),
-                  onPressed: () {},
-                ),
-              ],
-            ),
-            const SizedBox(height: 8),
-
-            // List of files
-            _buildFileItem(
-              iconBgColor: const Color(0xFFFEE2E2),
-              iconColor: const Color(0xFFDC2626),
-              title: 'Quarterly_Report_Q3.pdf',
-              subtitle: 'Oct 24, 2023 • 2.4 MB',
-            ),
-            const SizedBox(height: 12),
-            _buildFileItem(
-              iconBgColor: const Color(0xFFFEE2E2),
-              iconColor: const Color(0xFFDC2626),
-              title: 'Signed_Contract_v2.pdf',
-              subtitle: 'Yesterday • 850 KB',
-            ),
-            const SizedBox(height: 12),
-            _buildFileItem(
-              iconBgColor: const Color(0xFFFEE2E2),
-              iconColor: const Color(0xFFDC2626),
-              title: 'ID_Card_Front_...',
-              subtitle: '2 days ago • 1.2 MB',
-              isLocked: true,
-            ),
-            const SizedBox(height: 24),
-
-            // Upload More Files Button (Dashed)
-            CustomPaint(
-              painter: DashedRectPainter(
-                color: borderGray,
-                strokeWidth: 1.5,
-                gap: 6.0,
-                radius: 12.0,
-              ),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 32),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-                child: Column(
-                  children: [
-                    Container(
-                      padding: const EdgeInsets.all(8),
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        border: Border.all(color: const Color(0xFF94A3B8), width: 2),
-                      ),
-                      child: const Icon(Icons.add, color: Color(0xFF94A3B8), size: 24),
-                    ),
-                    const SizedBox(height: 16),
-                    const Text(
-                      "Tap the '+' button to upload more files",
-                      style: TextStyle(
-                        color: Color(0xFF64748B),
-                        fontSize: 14,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-            const SizedBox(height: 80), // Space for FAB
           ],
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        backgroundColor: primaryGreen,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(16),
-        ),
-        child: const Icon(Icons.add, color: Colors.white, size: 32),
-      ),
-
+      )
     );
   }
 

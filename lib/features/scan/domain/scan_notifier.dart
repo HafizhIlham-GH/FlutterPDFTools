@@ -2,7 +2,6 @@ import 'dart:io';
 import 'dart:typed_data';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
-import 'package:printing/printing.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_doc_scanner/flutter_doc_scanner.dart';
 import 'package:file_picker/file_picker.dart';
@@ -50,17 +49,37 @@ class ScanNotifier extends StateNotifier<ScanState> {
 
   Future<void> exportPdf(List<Uint8List> pages) async {
     state = ScanLoading();
-    final pdf = pw.Document();
-    for (final bytes in pages) {
-      final image = pw.MemoryImage(bytes);
-      pdf.addPage(
-        pw.Page(
-          pageFormat: PdfPageFormat.a4,
-          build: (_) => pw.Center(child: pw.Image(image)),
-        ),
+    try {
+      final pdf = pw.Document();
+      for (final bytes in pages) {
+        final image = pw.MemoryImage(bytes);
+        pdf.addPage(
+          pw.Page(
+            pageFormat: PdfPageFormat.a4,
+            build: (_) => pw.Center(child: pw.Image(image)),
+          ),
+        );
+      }
+      
+      final pdfBytes = await pdf.save();
+      
+      // Select where to save the file
+      final String? outputFile = await FilePicker.saveFile(
+        dialogTitle: 'Save PDF Document',
+        fileName: 'scanned_document.pdf',
+        type: FileType.custom,
+        allowedExtensions: ['pdf'],
       );
+
+      if (outputFile != null) {
+        final file = File(outputFile);
+        await file.writeAsBytes(pdfBytes);
+        // Optionally show success, but for now we just return to ready state
+      }
+      
+      state = ScanReady(pages);
+    } catch (e) {
+      state = ScanError(e.toString());
     }
-    await Printing.sharePdf(bytes: await pdf.save(), filename: 'scanned-document.pdf');
-    state = ScanReady(pages);
   }
 }
