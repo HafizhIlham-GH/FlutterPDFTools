@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import '../../convert/presentation/convert_page.dart';
 import '../../edit/presentation/edit_page.dart';
+import '../../scan/presentation/scan_page.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -15,7 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    const primaryGreen = Color(0xFF0D826B);
+    const primaryGreen = Color(0xFF00685F);
     const bgGray = Color(0xFFF8F9FA);
     const textDark = Color(0xFF1E293B);
     const textLight = Color(0xFF64748B);
@@ -159,7 +160,10 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              // Action for Scan Document
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (_) => const ScanPage()),
+                              );
                             },
                             child: Container(
                               width: double.infinity,
