@@ -14,7 +14,7 @@ final editProvider = StateNotifierProvider<EditNotifier, EditState>((ref) {
 class EditNotifier extends StateNotifier<EditState> {
   EditNotifier() : super(EditInitial());
 
-  Future<void> pickPdf() async {
+  Future<void> pickPdf({List<Uint8List>? existingPages}) async {
     state = EditLoading();
     final result = await FilePicker.pickFiles(
       type: FileType.custom,
@@ -22,13 +22,17 @@ class EditNotifier extends StateNotifier<EditState> {
       withData: true,
     );
     if (result == null) {
-      state = EditInitial();
+      if (existingPages != null && existingPages.isNotEmpty) {
+        state = EditReady(pages: existingPages, originalBytes: Uint8List(0));
+      } else {
+        state = EditInitial();
+      }
       return;
     }
 
     final bytes = result.files.first.bytes!;
     final doc = await pdfx.PdfDocument.openData(bytes);
-    final List<Uint8List> pages = [];
+    final List<Uint8List> pages = existingPages != null ? List.from(existingPages) : [];
 
     for (int i = 1; i <= doc.pagesCount; i++) {
       final page = await doc.getPage(i);

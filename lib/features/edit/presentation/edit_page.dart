@@ -18,12 +18,20 @@ class _EditPageState extends ConsumerState<EditPage> {
 
   @override
   Widget build(BuildContext context) {
+    ref.listen<EditState>(editProvider, (previous, next) {
+      if (next is EditReady && (previous is EditLoading || previous is EditInitial)) {
+        setState(() {
+          _pages = List.from(next.pages);
+        });
+      } else if (next is EditInitial) {
+        setState(() {
+          _pages.clear();
+        });
+      }
+    });
+
     final state = ref.watch(editProvider);
     const primaryGreen = Color(0xFF00685F);
-
-    if (state is EditReady && _pages.isEmpty) {
-      _pages = List.from(state.pages);
-    }
 
     return Scaffold(
       backgroundColor: Colors.white,
@@ -198,8 +206,7 @@ class _EditPageState extends ConsumerState<EditPage> {
             children: [
               OutlinedButton(
                 onPressed: () {
-                  setState(() => _pages.clear());
-                  ref.read(editProvider.notifier).pickPdf();
+                  ref.read(editProvider.notifier).pickPdf(existingPages: _pages);
                 },
                 style: OutlinedButton.styleFrom(
                   foregroundColor: primaryGreen,

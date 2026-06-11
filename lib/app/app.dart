@@ -25,18 +25,25 @@ class AppShell extends StatefulWidget {
 class _AppShellState extends State<AppShell> {
   int _index = 0;
 
-  final List<Widget> _screens = [
-    const HomePage(),
-    const ScanPage(),
-    const EditPage(),
-  ];
+  void _onNavigate(int index) {
+    setState(() {
+      _index = index;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     const primaryGreen = Color(0xFF0D826B);
 
     return Scaffold(
-      body: IndexedStack(index: _index, children: _screens),
+      body: IndexedStack(
+        index: _index, 
+        children: [
+          HomePage(onNavigate: _onNavigate),
+          const ScanPage(),
+          const EditPage(),
+        ],
+      ),
       bottomNavigationBar: Container(
         decoration: BoxDecoration(
           color: Colors.white,

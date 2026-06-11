@@ -7,7 +7,9 @@ import '../../scan/presentation/scan_page.dart';
 import 'package:pdftools/app/widgets/pdf_tools_app_bar.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({super.key});
+  final Function(int)? onNavigate;
+
+  const HomePage({super.key, this.onNavigate});
 
   @override
   State<HomePage> createState() => _HomePageState();
@@ -32,7 +34,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             // Greeting
             const Text(
-              'Good morning,',
+              'Welcome to PDF Tools',
               style: TextStyle(
                 color: textDark,
                 fontSize: 28,
@@ -140,10 +142,14 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => const ScanPage()),
-                              );
+                              if (widget.onNavigate != null) {
+                                widget.onNavigate!(1);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => const ScanPage()),
+                                );
+                              }
                             },
                             child: Container(
                               width: double.infinity,
@@ -185,10 +191,14 @@ class _HomePageState extends State<HomePage> {
                         Expanded(
                           child: GestureDetector(
                             onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(builder: (_) => EditPage()),
-                              );
+                              if (widget.onNavigate != null) {
+                                widget.onNavigate!(2);
+                              } else {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => EditPage()),
+                                );
+                              }
                             },
                             child: Container(
                               width: double.infinity,
