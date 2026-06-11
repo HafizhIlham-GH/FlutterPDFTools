@@ -38,8 +38,8 @@ class ScanNotifier extends StateNotifier<ScanState> {
         state = ScanInitial();
         return;
       }
-      final pages = (result as List)
-          .map((path) => File(path.toString()).readAsBytesSync())
+      final pages = result.images
+          .map((path) => File(path).readAsBytesSync())
           .toList();
       state = ScanReady(pages);
     } catch (e) {
