@@ -75,6 +75,7 @@ class ScanNotifier extends StateNotifier<ScanState> {
         fileName: 'scanned_document.pdf',
         type: FileType.custom,
         allowedExtensions: ['pdf'],
+        bytes:pdfBytes,
       );
 
       if (outputFile != null) {
