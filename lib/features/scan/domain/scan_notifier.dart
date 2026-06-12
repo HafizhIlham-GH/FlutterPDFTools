@@ -27,7 +27,9 @@ class ScanNotifier extends StateNotifier<ScanState> {
           state = ScanInitial();
           return;
         }
-        final pages = res.files.map((f) => File(f.path!).readAsBytesSync()).toList();
+        final pages = res.files
+            .map((f) => File(f.path!).readAsBytesSync())
+            .toList();
         state = ScanReady(pages);
         return;
       }
@@ -38,8 +40,12 @@ class ScanNotifier extends StateNotifier<ScanState> {
         state = ScanInitial();
         return;
       }
-      final pages = result.images
-          .map((path) => File(path).readAsBytesSync())
+      final pages = result
+          .images // or whatever the property is
+          .map((path) {
+            final cleanPath = path.replaceFirst('file://', '');
+            return File(cleanPath).readAsBytesSync();
+          })
           .toList();
       state = ScanReady(pages);
     } catch (e) {
@@ -60,9 +66,9 @@ class ScanNotifier extends StateNotifier<ScanState> {
           ),
         );
       }
-      
+
       final pdfBytes = await pdf.save();
-      
+
       // Select where to save the file
       final String? outputFile = await FilePicker.saveFile(
         dialogTitle: 'Save PDF Document',
@@ -76,7 +82,7 @@ class ScanNotifier extends StateNotifier<ScanState> {
         await file.writeAsBytes(pdfBytes);
         // Optionally show success, but for now we just return to ready state
       }
-      
+
       state = ScanReady(pages);
     } catch (e) {
       state = ScanError(e.toString());
